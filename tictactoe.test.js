@@ -3,16 +3,15 @@
 
 /* ******************************
  *  * TODO:
- * -Clean up code /comments as needed in app to make it easy to read and talk about
  *
- * -edit/add tests so they make sense for adding computer player
+ * figure out why test suite isn't finishing
  *
  * -sketch out notes for how to add computer player with random and maybe AI
  *
  * submit and schedule pairing
 */
 
-const { mark, isWin, getInput, validate, xmk, omk, switchPlayer } = require('./tictactoe');
+const { mark, isWin, validate, xmk, omk, switchPlayer } = require('./tictactoe');
 
 // board marking
 describe('mark board', () => {
@@ -24,9 +23,13 @@ describe('mark board', () => {
     expect(await mark(3, [1, 2, 3])).toEqual([1, 2, `${xmk}`]);
   });
 
-  it(`mark(1, [${xmk}, 2, 3] with player 2 to return original array`, async () => {
+  it(`mark(1, [${xmk}, 2, 3] with player 2 to log error msg`, () => {
     switchPlayer();
-    expect(await mark(1, [xmk, 2, 3])).toEqual([xmk, 2, 3]);
+    const log = console.log;
+    console.log = jest.fn();
+    const mks = mark(1, [xmk, 2, 3]);
+    expect(console.log).toHaveBeenCalled();
+    console.log = log;
   });
 });
 

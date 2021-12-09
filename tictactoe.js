@@ -112,7 +112,7 @@ async function mark(pos, arr) {
     arr[pos - 1] = player === 1 ? xmk : omk;
   } else {
     console.log(chalk.red('Square already taken, try again'));
-    await sleep(2000);
+    await sleep(1000);
   }
   return arr;
 }
@@ -172,4 +172,4 @@ function sleep(ms) {
 }
 
 
-module.exports = { mark, isWin, getInput, validate, xmk, omk, switchPlayer };
+module.exports = { mark, isWin, getInput, validate, xmk, omk, switchPlayer, sleep };

@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "test": "jest --detectOpenHandles"
+    "test": "jest",
+    "testhandles": "jest --detectOpenHandles"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
