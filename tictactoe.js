@@ -84,7 +84,7 @@ async function initGame() {
   }
 }
 
-function getInput(str) { 
+function getInput(str) {
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
