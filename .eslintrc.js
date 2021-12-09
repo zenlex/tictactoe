@@ -14,5 +14,17 @@ module.exports = {
     "ecmaVersion": 'latest'
   },
   "rules": {
+    "semi": [1, "always"],
+    "no-trailing-spaces": [1,
+      {
+        "skipBlankLines": true,
+        "ignoreComments": true
+      }
+    ],
+    "space-before-function-paren": ["error", {
+      "anonymous": "always",
+      "named": "never",
+      "asyncArrow": "always"
+    }]
   }
-}
+};
