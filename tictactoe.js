@@ -55,9 +55,9 @@ async function gameLoop() {
     move = await getInput(str);
     move = validate(move);
     if (move) {
-      mks = mark(move, mks);
+      mks = await mark(move, mks);
       draw();
-      win = isWin(move);
+      win = isWin(move, mks);
       if (win === null) break; // draw
       if (!win) player = switchPlayer(player);
     }
@@ -69,7 +69,7 @@ async function gameLoop() {
 /* ---------------------------
     UTILITY FUNCTIONS
 ---------------------------- */
-function initGame() {
+async function initGame() {
   console.clear();
   console.log(chalk.bold.bgBlack.red('WELCOME TO THE TIC TAC TOE THUNDERDOME'));
   console.log(
@@ -80,10 +80,9 @@ function initGame() {
   mks = [...Array(9).keys()].map(val => val + 1);
   player = 1;
   win = false;
-  setTimeout(() => {
-    draw();
-    gameLoop();
-  }, 2500);
+  await sleep(2000);
+  draw();
+  gameLoop();
 }
 
 function getInput(str) {
@@ -107,12 +106,13 @@ function validate(input) {
   return result;
 }
 
-function mark(pos, arr) {
+async function mark(pos, arr) {
   const i = pos - 1;
   if (typeof arr[i] === 'number') {
     arr[pos - 1] = player === 1 ? xmk : omk;
   } else {
     console.log(chalk.red('Square already taken, try again'));
+    await sleep(2000);
   }
   return arr;
 }
@@ -121,7 +121,7 @@ function switchPlayer(player) {
   return player === 1 ? 2 : 1;
 }
 
-function isWin(i) {
+function isWin(i, arr) {
   const winMap = new Map([
     [1, [[1, 2, 3], [1, 4, 7], [1, 5, 9]]],
     [2, [[2, 5, 8], [1, 2, 3]]],
@@ -135,8 +135,8 @@ function isWin(i) {
   ]);
   const test = player === 1 ? xmk : omk;
   const lines = winMap.get(i);
-  const result = lines.some(val => val.every(square => mks[square - 1] === test));
-  if (!result && mks.every(sq => typeof sq !== 'number')) {
+  const result = lines.some(val => val.every(square => arr[square - 1] === test));
+  if (!result && arr.every(sq => typeof sq !== 'number')) {
     return null; // draw condition
   }
   return result;
@@ -154,7 +154,7 @@ function winner(draw = false) {
 
 async function reboot() {
   let ans;
-  while (ans != 'y' && ans != 'n') {
+  while (ans !== 'y' && ans !== 'n') {
     ans = await getInput('Play another? (y or n)');
   }
   if (ans === 'y') {
@@ -167,5 +167,9 @@ function draw() {
   board();
 }
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
-module.exports = { initGame, mark, isWin, winner, draw, getInput, validate };
+
+module.exports = { mark, isWin, getInput, validate, xmk, omk, switchPlayer };
