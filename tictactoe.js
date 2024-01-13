@@ -8,7 +8,7 @@ const readline = require('readline'); // readline wrapper for stdio
     GAME STATE
 --------------------------- */
 let mks = [...Array(9).keys()].map(val => val + 1);
-let player;
+let player = 1;
 const score = [0, 0];
 let win = false;
 const xmk = chalk.bold.redBright('X');
